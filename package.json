@@ -1,0 +1,16 @@
+{
+  "name": "federatedservicea",
+  "version": "1.0.0",
+  "description": "implementing service for federated gateway",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Travis Aucoin",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/federation": "^0.20.7",
+    "apollo-server": "^2.19.1",
+    "aws-sdk": "^2.828.0"
+  }
+}
