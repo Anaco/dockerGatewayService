@@ -6,6 +6,7 @@ phases:
       - apt-get update && apt-get -y install jq python3-pip python3-dev && pip3 install --upgrade awscli
   pre_build:
     commands:
+      - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - TAG="$REPOSITORY_NAME.$REPOSITORY_BRANCH.$ENVIRONMENT_NAME.$(date +%Y-%m-%d.%H.%M.%S).$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8)"
   build:
@@ -14,7 +15,7 @@ phases:
       - echo Building the Docker image...
       - docker build -t $REPOSITORY_NAME:$TAG .
       - docker tag $REPOSITORY_NAME:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPOSITORY_NAME:$TAG
-  post-build:
+  post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
