@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: federated-gateway-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: federated-gateway-service
+  template:
+    metadata:
+      labels:
+        app: federated-gateway-service
+    spec:
+      serviceAccountName: service-a-account
+      containers:
+        - name: federated-gateway-service
+          image: IMG_URL
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 4001
+              name: http
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cip-federated-gateway-service
+spec:
+  selector:
+    app: federated-gateway-service
+  ports:
+    - protocol: TCP
+      port: 4001
+  type: ClusterIP
+# ---
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: service-a-account
+#   annotations:
+#     eks.amazonaws.com/role-arn: arn:aws:iam::889478489411:role/Service-A-DDB-K8s-Role
+# automountServiceAccountToken: false
